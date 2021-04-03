@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :merchant do
-    title { Faker::Merchant.name }
+    name { Faker::Games::Pokemon.name }
   end
 end
