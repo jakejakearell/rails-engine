@@ -70,6 +70,37 @@ describe "Rail Engine API-Merchants" do
       expect(merchants_copy.first.class).to eq(Hash)
       expect(merchants_new_page.first.class).to eq(Hash)
     end
+
+    it "a user can request a different page and a more than 20 responses" do
+      create_list(:merchant, 100)
+
+      get '/api/v1/merchants?page=1&per_page=23'
+      expect(response).to be_successful
+      merchants = JSON.parse(response.body, symbolize_names: true)
+
+      get '/api/v1/merchants?page=1&per_page=23'
+      expect(response).to be_successful
+      merchants_copy = JSON.parse(response.body, symbolize_names: true)
+
+      get '/api/v1/merchants?page=2&per_page=23'
+      expect(response).to be_successful
+      merchants_new_page = JSON.parse(response.body, symbolize_names: true)
+
+      # Don't know if I need to assert the copies are the same.
+      expect(merchants.first).to eq(merchants_copy.first)
+      expect(merchants.last).to eq(merchants_copy.last)
+
+      expect(merchants.first).not_to eq(merchants_new_page.first)
+      expect(merchants.last).not_to eq(merchants_new_page.last)
+
+      expect(merchants.count).to eq(23)
+      expect(merchants_copy.count).to eq(23)
+      expect(merchants_new_page.count).to eq(23)
+
+      expect(merchants.first.class).to eq(Hash)
+      expect(merchants_copy.first.class).to eq(Hash)
+      expect(merchants_new_page.first.class).to eq(Hash)
+    end
   end
 
   describe 'sad paths' do
