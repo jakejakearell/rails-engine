@@ -4,6 +4,6 @@ class ApplicationController < ActionController::API
   end
 
   def page_count
-    @count = params[:page] || 1
+    @count = params[:page] || 0
   end
 end
