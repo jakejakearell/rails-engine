@@ -12,6 +12,7 @@ describe "Rail Engine API-Merchants" do
       merchants = JSON.parse(response.body, symbolize_names: true)
 
       expect(merchants).to be_a(Hash)
+      expect(merchants[:data]).to be_a(Array)
       expect(merchants[:data].count).to be(20)
 
       merchants[:data].each do |merchant|
@@ -39,6 +40,7 @@ describe "Rail Engine API-Merchants" do
       merchants = JSON.parse(response.body, symbolize_names: true)
 
       expect(merchants).to be_a(Hash)
+      expect(merchants[:data]).to be_a(Array)
       expect(merchants[:data].count).to be(50)
 
       merchants[:data].each do |merchant|
@@ -123,11 +125,15 @@ describe "Rail Engine API-Merchants" do
     it "will send an empty array when a page does not exist" do
       create_list(:merchant, 100)
 
-      get '/api/v1/merchants'
+      get '/api/v1/merchants?page=250'
 
       expect(response).to be_successful
 
+      merchants = JSON.parse(response.body, symbolize_names: true)
 
-      end
+      expect(merchants).to be_a(Hash)
+      expect(merchants[:data]).to be_a(Array)
+      expect(merchants[:data].empty?).to be(true)
+    end
   end
 end
