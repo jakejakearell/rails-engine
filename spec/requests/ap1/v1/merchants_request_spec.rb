@@ -11,13 +11,21 @@ describe "Rail Engine API-Merchants" do
 
       merchants = JSON.parse(response.body, symbolize_names: true)
 
-      expect(merchants.count).to be(20)
-      merchants.each do |merchant|
-        expect(merchant).to have_key(:id)
-        expect(merchant[:id]).to be_a(Integer)
+      expect(merchants).to be_a(Hash)
+      expect(merchants[:data].count).to be(20)
 
-        expect(merchant).to have_key(:name)
-        expect(merchant[:name]).to be_a(String)
+      merchants[:data].each do |merchant|
+        expect(merchant).to have_key(:id)
+        expect(merchant[:id]).to be_a(String)
+
+        expect(merchant).to have_key(:type)
+        expect(merchant[:type]).to eq("merchant")
+
+        expect(merchant).to have_key(:attributes)
+        expect(merchant[:attributes]).to be_a(Hash)
+
+        expect(merchant[:attributes]).to have_key(:name)
+        expect(merchant[:attributes][:name]).to be_a(String)
       end
     end
 
@@ -30,13 +38,21 @@ describe "Rail Engine API-Merchants" do
 
       merchants = JSON.parse(response.body, symbolize_names: true)
 
-      expect(merchants.count).to be(50)
-      merchants.each do |merchant|
-        expect(merchant).to have_key(:id)
-        expect(merchant[:id]).to be_a(Integer)
+      expect(merchants).to be_a(Hash)
+      expect(merchants[:data].count).to be(50)
 
-        expect(merchant).to have_key(:name)
-        expect(merchant[:name]).to be_a(String)
+      merchants[:data].each do |merchant|
+        expect(merchant).to have_key(:id)
+        expect(merchant[:id]).to be_a(String)
+
+        expect(merchant).to have_key(:type)
+        expect(merchant[:type]).to eq("merchant")
+
+        expect(merchant).to have_key(:attributes)
+        expect(merchant[:attributes]).to be_a(Hash)
+
+        expect(merchant[:attributes]).to have_key(:name)
+        expect(merchant[:attributes][:name]).to be_a(String)
       end
     end
 
@@ -56,19 +72,19 @@ describe "Rail Engine API-Merchants" do
       merchants_new_page = JSON.parse(response.body, symbolize_names: true)
 
       # Don't know if I need to assert the copies are the same.
-      expect(merchants.first).to eq(merchants_copy.first)
-      expect(merchants.last).to eq(merchants_copy.last)
+      expect(merchants[:data].first).to eq(merchants_copy[:data].first)
+      expect(merchants[:data].last).to eq(merchants_copy[:data].last)
 
-      expect(merchants.first).not_to eq(merchants_new_page.first)
-      expect(merchants.last).not_to eq(merchants_new_page.last)
+      expect(merchants[:data].first).not_to eq(merchants_new_page[:data].first)
+      expect(merchants[:data].last).not_to eq(merchants_new_page[:data].last)
 
-      expect(merchants.count).to eq(20)
-      expect(merchants_copy.count).to eq(20)
-      expect(merchants_new_page.count).to eq(20)
+      expect(merchants[:data].count).to eq(20)
+      expect(merchants_copy[:data].count).to eq(20)
+      expect(merchants_new_page[:data].count).to eq(20)
 
-      expect(merchants.first.class).to eq(Hash)
-      expect(merchants_copy.first.class).to eq(Hash)
-      expect(merchants_new_page.first.class).to eq(Hash)
+      expect(merchants[:data].first.class).to eq(Hash)
+      expect(merchants_copy[:data].first.class).to eq(Hash)
+      expect(merchants_new_page[:data].first.class).to eq(Hash)
     end
 
     it "a user can request a different page and a more than 20 responses" do
@@ -87,19 +103,19 @@ describe "Rail Engine API-Merchants" do
       merchants_new_page = JSON.parse(response.body, symbolize_names: true)
 
       # Don't know if I need to assert the copies are the same.
-      expect(merchants.first).to eq(merchants_copy.first)
-      expect(merchants.last).to eq(merchants_copy.last)
+      expect(merchants[:data].first).to eq(merchants_copy[:data].first)
+      expect(merchants[:data].last).to eq(merchants_copy[:data].last)
 
-      expect(merchants.first).not_to eq(merchants_new_page.first)
-      expect(merchants.last).not_to eq(merchants_new_page.last)
+      expect(merchants[:data].first).not_to eq(merchants_new_page[:data].first)
+      expect(merchants[:data].last).not_to eq(merchants_new_page[:data].last)
 
-      expect(merchants.count).to eq(23)
-      expect(merchants_copy.count).to eq(23)
-      expect(merchants_new_page.count).to eq(23)
+      expect(merchants[:data].count).to eq(23)
+      expect(merchants_copy[:data].count).to eq(23)
+      expect(merchants_new_page[:data].count).to eq(23)
 
-      expect(merchants.first.class).to eq(Hash)
-      expect(merchants_copy.first.class).to eq(Hash)
-      expect(merchants_new_page.first.class).to eq(Hash)
+      expect(merchants[:data].first.class).to eq(Hash)
+      expect(merchants_copy[:data].first.class).to eq(Hash)
+      expect(merchants_new_page[:data].first.class).to eq(Hash)
     end
   end
 
