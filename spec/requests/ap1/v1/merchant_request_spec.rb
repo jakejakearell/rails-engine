@@ -28,12 +28,16 @@ describe "Rail Engine API-Merchant" do
     end
 
     it "sends all items that belong to a merchant" do
-      id = create(:merchant).id
+      merchant = create(:merchant)
+      things = create_list(:item, 100)
 
-      get "/api/v1/merchants/#{id}/items"
+      mine = things.each do |thing|
+        thing.update({:merchant_id => merchant.id})
+      end
 
+      get "/api/v1/merchants/#{merchant.id}/items"
       merchant = JSON.parse(response.body, symbolize_names: true)
-      require "pry"; binding.pry
+
     end
   end
 
