@@ -27,28 +27,49 @@ describe "Rail Engine API-Merchant" do
       expect(merchant[:data][:attributes][:name]).to be_a(String)
     end
 
-    xit "sends all items that belong to a merchant" do
+    it "sends all items that belong to a merchant" do
       merchant = create(:merchant)
-      things = create_list(:item, 100)
+      items = create_list(:item, 34)
 
-      mine = things.each do |thing|
-        thing.update({:merchant_id => merchant.id})
+      items.each do |item|
+        item.update({:merchant_id => merchant.id})
       end
 
       get "/api/v1/merchants/#{merchant.id}/items"
-      merchant = JSON.parse(response.body, symbolize_names: true)
+      merchant_items = JSON.parse(response.body, symbolize_names: true)
 
+      expect(merchant_items).to be_a(Hash)
+      expect(merchant_items[:data]).to be_a(Array)
+      expect(merchant_items[:data].count).to be(34)
+
+      merchant_items[:data].each do |item|
+        expect(item).to have_key(:id)
+        expect(item[:id]).to be_a(String)
+        expect(item).to have_key(:type)
+        expect(item[:type]).to eq("item")
+        expect(item).to have_key(:attributes)
+
+        expect(item[:attributes]).to be_a(Hash)
+        expect(item[:attributes]).to have_key(:name)
+        expect(item[:attributes][:name]).to be_a(String)
+        expect(item[:attributes]).to have_key(:description)
+        expect(item[:attributes][:description]).to be_a(String)
+        expect(item[:attributes]).to have_key(:unit_price)
+        expect(item[:attributes][:unit_price]).to be_a(Float)
+        expect(item[:attributes]).to have_key(:merchant_id)
+        expect(item[:attributes][:merchant_id]).to be_a(Integer)
+      end
     end
   end
 
   describe 'Sad Paths' do
-    xit "sends a 404 when an invalid id is sent" do
+    it "sends a 404 when an invalid id is sent" do
       id = 12399123
-
       get "/api/v1/merchants/#{id}"
+      message = JSON.parse(response.body)
 
-      merchant = JSON.parse(response.body, symbolize_names: true)
-
+      expect(response.status).to eq(404)
+      expect(message["error"]).to eq("No such merchant")
     end
   end
 end
