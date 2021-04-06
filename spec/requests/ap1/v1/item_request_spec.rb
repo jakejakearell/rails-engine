@@ -75,7 +75,12 @@ describe "Rail Engine API-Item" do
 
   describe 'Sad Paths' do
     it "sends a 404 when an invalid id is sent" do
+      id = 12399123
+      get "/api/v1/items/#{id}"
+      message = JSON.parse(response.body)
+
       expect(response.status).to eq(404)
+      expect(message["error"]).to eq("No such item")
     end
   end
 end

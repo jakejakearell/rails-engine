@@ -9,7 +9,11 @@ class Api::V1::ItemsController < ApplicationController
   end
 
   def show
-    render json: ItemSerializer.new(Item.find(item_id))
+    begin
+      render json: ItemSerializer.new(Item.find(item_id))
+    rescue ActiveRecord::RecordNotFound
+      render json: {error: "No such item",status: 404}, status: 404
+    end
   end
 
   def create
