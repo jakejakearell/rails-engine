@@ -9,5 +9,12 @@ class Api::V1::ItemsController < ApplicationController
   end
 
   def show
+    render json: ItemSerializer.new(Item.find(item_id))
+  end
+
+  private
+
+  def item_id
+    params[:id]
   end
 end
