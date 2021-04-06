@@ -46,16 +46,36 @@ describe "Rail Engine API-Item" do
       created_item = Item.last
 
       expect(response).to be_successful
+      expect(response.status).to eq(201)
+      expect(created_item.name).to eq(item_params[:name])
+      expect(created_item.description).to eq(item_params[:description])
+      expect(created_item.unit_price).to eq(item_params[:unit_price])
+      expect(created_item.merchant_id).to eq(item_params[:merchant_id])
+
+      Item.last.delete
+    end
+
+    it "can update an item" do
+
+    end
+
+    xit "can destroy an item" do
+
+      delete "/api/v1/items", params: JSON.generate(item: item_params)
+
+      created_item = Item.last
+
+      expect(response).to be_successful
       expect(created_item.name).to eq(item_params[:name])
       expect(created_item.description).to eq(item_params[:description])
       expect(created_item.unit_price).to eq(item_params[:unit_price])
       expect(created_item.merchant_id).to eq(item_params[:merchant_id])
     end
-
   end
 
   describe 'Sad Paths' do
-    xit "sends a 404 when an invalid id is sent" do
+    it "sends a 404 when an invalid id is sent" do
+      expect(response.status).to eq(404)
     end
   end
 end
