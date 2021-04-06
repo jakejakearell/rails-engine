@@ -50,6 +50,10 @@ describe "Rail Engine API-Item" do
       expect(created_item.description).to eq(item_params[:description])
       expect(created_item.unit_price).to eq(item_params[:unit_price])
       expect(created_item.merchant_id).to eq(item_params[:merchant_id])
+
+
+      #I don't think I should need this teardown
+      Item.last.delete
     end
 
   end
