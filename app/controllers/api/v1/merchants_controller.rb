@@ -17,12 +17,4 @@ class Api::V1::MerchantsController < ApplicationController
   def merchant_id
     params[:id]
   end
-
-  def page_offset
-    if page_count.to_i == 0
-      (query_size.to_i) * (page_count.to_i)
-    else
-      (query_size.to_i) * (page_count.to_i - 1)
-    end
-  end
 end

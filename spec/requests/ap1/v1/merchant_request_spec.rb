@@ -26,6 +26,19 @@ describe "Rail Engine API-Merchant" do
       expect(merchant[:data][:attributes]).to have_key(:name)
       expect(merchant[:data][:attributes][:name]).to be_a(String)
     end
+
+    xit "sends all items that belong to a merchant" do
+      merchant = create(:merchant)
+      things = create_list(:item, 100)
+
+      mine = things.each do |thing|
+        thing.update({:merchant_id => merchant.id})
+      end
+
+      get "/api/v1/merchants/#{merchant.id}/items"
+      merchant = JSON.parse(response.body, symbolize_names: true)
+
+    end
   end
 
   describe 'Sad Paths' do
