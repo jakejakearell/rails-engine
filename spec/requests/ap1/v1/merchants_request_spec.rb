@@ -58,20 +58,6 @@ describe "Rail Engine API-Merchants" do
       end
     end
 
-    it "a user requests more merchants than exist it will return all merchants" do
-      create_list(:merchant, 53)
-
-      get '/api/v1/merchants?per_page=900'
-
-      expect(response).to be_successful
-
-      merchants = JSON.parse(response.body, symbolize_names: true)
-
-      expect(merchants).to be_a(Hash)
-      expect(merchants[:data]).to be_a(Array)
-      expect(merchants[:data].count).to be(53)
-    end
-
     it "a user can request a different page" do
       create_list(:merchant, 100)
 
@@ -148,6 +134,20 @@ describe "Rail Engine API-Merchants" do
       expect(merchants).to be_a(Hash)
       expect(merchants[:data]).to be_a(Array)
       expect(merchants[:data].empty?).to be(true)
+    end
+
+    it "a user requests more merchants than exist it will return all merchants" do
+      create_list(:merchant, 53)
+
+      get '/api/v1/merchants?per_page=900'
+
+      expect(response).to be_successful
+
+      merchants = JSON.parse(response.body, symbolize_names: true)
+
+      expect(merchants).to be_a(Hash)
+      expect(merchants[:data]).to be_a(Array)
+      expect(merchants[:data].count).to be(53)
     end
   end
 end
