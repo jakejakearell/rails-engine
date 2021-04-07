@@ -1,5 +1,4 @@
 class Api::V1::MerchantsController < ApplicationController
-  # before_action :page_count
 
   def index
     render json: MerchantSerializer.new(Merchant.all
