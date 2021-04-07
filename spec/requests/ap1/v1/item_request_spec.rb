@@ -95,7 +95,7 @@ describe "Rail Engine API-Item" do
       items_merchant = JSON.parse(response.body, symbolize_names: true)
 
       expect(items_merchant).to be_a(Hash)
-      
+
       expect(items_merchant[:data]).to be_a(Hash)
       expect(items_merchant[:data]).to have_key(:id)
       expect(items_merchant[:data][:id]).to be_a(String)
@@ -111,9 +111,27 @@ describe "Rail Engine API-Item" do
   end
 
   describe 'Sad Paths' do
-    it "sends a 404 when an invalid id is sent" do
+    it "sends a 404 when an invalid id is sent for merchant endpoint" do
       id = 12399123
       get "/api/v1/items/#{id}"
+      message = JSON.parse(response.body)
+
+      expect(response.status).to eq(404)
+      expect(message["error"]).to eq("No such item")
+    end
+
+    it "sends a 404 when an invalid id is sent for merchant's item endpoint" do
+      id = 12399123
+      get "/api/v1/items/#{id}/merchant"
+      message = JSON.parse(response.body)
+
+      expect(response.status).to eq(404)
+      expect(message["error"]).to eq("No such item")
+    end
+
+    it "sends a 404 when an invalid id to delete an item" do
+      id = 12399123
+      delete "/api/v1/items/#{id}"
       message = JSON.parse(response.body)
 
       expect(response.status).to eq(404)

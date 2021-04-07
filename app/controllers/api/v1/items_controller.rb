@@ -32,21 +32,24 @@ class Api::V1::ItemsController < ApplicationController
   end
 
   def destroy
-    Item.destroy(item_id)
-    render json: {body: "Item destroyed",status: 202}, status: 202
+    begin
+      Item.destroy(item_id)
+      render json: {body: "Item destroyed",status: 202}, status: 202
+    rescue ActiveRecord::RecordNotFound
+      render json: {error: "No such item",status: 404}, status: 404
+    end
   end
 
   private
-  def item_id
-    params[:id]
-  end
+    def item_id
+      params[:id]
+    end
 
-  def item_params
-    params.require(:item).permit(:name, :description, :unit_price, :merchant_id )
-  end
+    def item_params
+      params.require(:item).permit(:name, :description, :unit_price, :merchant_id )
+    end
 
-  def item_update
-    params.require(:item).permit(:name, :description, :unit_price)
-  end
-
+    def item_update
+      params.require(:item).permit(:name, :description, :unit_price)
+    end
 end
