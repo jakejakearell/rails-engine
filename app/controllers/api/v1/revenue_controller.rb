@@ -11,7 +11,8 @@ class Api::V1::RevenueController < ApplicationController
   end
 
   def  potential_revenue
-
+    revenue = Invoice.potential_revenue(quantity)
+    revenue = UnshippedOrder.new(revenue)
   end
 
 
