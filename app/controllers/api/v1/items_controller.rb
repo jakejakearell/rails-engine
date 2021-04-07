@@ -9,11 +9,20 @@ class Api::V1::ItemsController < ApplicationController
   end
 
   def show
-    render json: ItemSerializer.new(Item.find(item_id))
+    begin
+      render json: ItemSerializer.new(Item.find(item_id))
+    rescue ActiveRecord::RecordNotFound
+      render json: {error: "No such item",status: 404}, status: 404
+    end
   end
 
   def create
-    render json: ItemSerializer.new(Item.create(item_params)), status: 201
+    # this feels brittle
+    if item_params.keys.count !=4
+      render json: {error: "Missing item parameters",status: 406}, status: 406
+    else
+      render json: ItemSerializer.new(Item.create(item_params)), status: 201
+    end
   end
 
   def update
@@ -21,7 +30,6 @@ class Api::V1::ItemsController < ApplicationController
   end
 
   private
-
   def item_id
     params[:id]
   end
@@ -29,4 +37,5 @@ class Api::V1::ItemsController < ApplicationController
   def item_params
     params.require(:item).permit(:name, :description, :unit_price, :merchant_id )
   end
+
 end
