@@ -26,7 +26,14 @@ class Api::V1::ItemsController < ApplicationController
   end
 
   def update
+    item = Item.find(item_id)
+    item.update(item_update)
+    render json: ItemSerializer.new(Item.find(item_id))
+  end
 
+  def destroy
+    Item.destroy(item_id)
+    render json: {body: "Item destroyed",status: 202}, status: 202
   end
 
   private
@@ -36,6 +43,10 @@ class Api::V1::ItemsController < ApplicationController
 
   def item_params
     params.require(:item).permit(:name, :description, :unit_price, :merchant_id )
+  end
+
+  def item_update
+    params.require(:item).permit(:name, :description, :unit_price)
   end
 
 end
