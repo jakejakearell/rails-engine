@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe "Rail Engine API-Revenue" do
-
   before(:each) do
     @merchant_1 = Merchant.create!(name: 'Amazon')
 
@@ -48,6 +47,7 @@ describe "Rail Engine API-Revenue" do
       expect(revenue[:data][:attributes][:revenue]).to eq(60)
     end
   end
+  
   describe "Sad paths " do
     it "returns an error when given a bad merchant id" do
       id = 12399123
