@@ -69,17 +69,18 @@ describe "Rail Engine API-Item" do
       expect(item.name).to eq("The Big Dog")
     end
 
-    xit "can destroy an item" do
+    it "can destroy an item" do
+      item = create(:item)
 
-      delete "/api/v1/items", params: JSON.generate(item: item_params)
+      expect(Item.count).to eq(1)
 
-      created_item = Item.last
-
+      delete "/api/v1/items/#{item.id}"
+      message = JSON.parse(response.body)
+      
       expect(response).to be_successful
-      expect(created_item.name).to eq(item_params[:name])
-      expect(created_item.description).to eq(item_params[:description])
-      expect(created_item.unit_price).to eq(item_params[:unit_price])
-      expect(created_item.merchant_id).to eq(item_params[:merchant_id])
+      expect(message["body"]).to eq("Item destroyed")
+      expect(Item.count).to eq(0)
+      expect{Item.find(item.id)}.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 
