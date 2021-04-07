@@ -82,5 +82,19 @@ describe "Rail Engine API-Item" do
       expect(response.status).to eq(404)
       expect(message["error"]).to eq("No such item")
     end
+
+    it "doesn't create an item with missing attributes" do
+      item_params = ({
+                      name: 'Shiny Fork',
+                      description: 'Only missing one prong'
+                    })
+      headers = {"CONTENT_TYPE" => "application/json"}
+
+      post "/api/v1/items", headers: headers, params: JSON.generate(item: item_params)
+      message = JSON.parse(response.body)
+
+      expect(response.status).to eq(406)
+      expect(message["error"]).to eq("Missing item parameters")
+    end
   end
 end
