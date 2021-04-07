@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       resources :items, only: [:index, :show, :create, :update, :destroy]
       get 'merchants/:id/items', to: 'merchant_items#index'
       get 'items/:id/merchant', to: 'item_merchants#index'
+      get 'revenue/merchants/:id', to: 'revenue#merchant_revenue'
     end
   end
 end
