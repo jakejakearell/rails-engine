@@ -63,9 +63,18 @@ describe "Rail Engine API-Merchant" do
   end
 
   describe 'Sad Paths' do
-    it "sends a 404 when an invalid id is sent" do
+    it "sends a 404 when an invalid id is sent for merchant endpoint" do
       id = 12399123
       get "/api/v1/merchants/#{id}"
+      message = JSON.parse(response.body)
+
+      expect(response.status).to eq(404)
+      expect(message["error"]).to eq("No such merchant")
+    end
+
+    it "sends a 404 when an invalid id is sent for a merchant's items" do
+      id = 12399123
+      get "/api/v1/merchants/#{id}/items"
       message = JSON.parse(response.body)
 
       expect(response.status).to eq(404)

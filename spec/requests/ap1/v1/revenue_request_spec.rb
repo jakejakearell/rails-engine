@@ -46,8 +46,12 @@ describe "Rail Engine API-Revenue" do
       expect(revenue[:data][:attributes]).to have_key(:revenue)
       expect(revenue[:data][:attributes][:revenue]).to eq(60)
     end
+
+    it "will return a ranked order of potential revenue of unshipped orders" do
+      # get "/api/v1/revenue/merchants/#{@merchant_1.id}"
+    end
   end
-  
+
   describe "Sad paths " do
     it "returns an error when given a bad merchant id" do
       id = 12399123
