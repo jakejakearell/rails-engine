@@ -76,11 +76,37 @@ describe "Rail Engine API-Item" do
 
       delete "/api/v1/items/#{item.id}"
       message = JSON.parse(response.body)
-      
+
       expect(response).to be_successful
       expect(message["body"]).to eq("Item destroyed")
       expect(Item.count).to eq(0)
       expect{Item.find(item.id)}.to raise_error(ActiveRecord::RecordNotFound)
+    end
+
+    it "sends the merchant that belong to an item" do
+      merchant = create(:merchant)
+      items = create_list(:item, 34)
+
+      items.each do |item|
+        item.update({:merchant_id => merchant.id})
+      end
+
+      get "/api/v1/items/#{items.first.id}/merchant"
+      items_merchant = JSON.parse(response.body, symbolize_names: true)
+
+      expect(items_merchant).to be_a(Hash)
+      
+      expect(items_merchant[:data]).to be_a(Hash)
+      expect(items_merchant[:data]).to have_key(:id)
+      expect(items_merchant[:data][:id]).to be_a(String)
+      expect(items_merchant[:data][:id].to_i).to eq(merchant.id)
+      expect(items_merchant[:data]).to have_key(:type)
+      expect(items_merchant[:data][:type]).to eq("merchant")
+
+      expect(items_merchant[:data]).to have_key(:attributes)
+      expect(items_merchant[:data][:attributes]).to be_a(Hash)
+      expect(items_merchant[:data][:attributes]).to have_key(:name)
+      expect(items_merchant[:data][:attributes][:name]).to eq(merchant.name)
     end
   end
 
