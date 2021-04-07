@@ -48,7 +48,7 @@ describe "Rail Engine API-Revenue" do
     end
 
     it "will return a ranked order of potential revenue of unshipped orders" do
-      # get "/api/v1/revenue/merchants/#{@merchant_1.id}"
+      get "/api/v1/revenue/unshipped?quantity=10"
     end
   end
 
