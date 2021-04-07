@@ -56,20 +56,57 @@ describe "Rail Engine API-Item" do
     end
 
     it "can update an item" do
+      id = create(:item).id
+      previous_name = Item.last.name
+      item_params = { name: "The Big Dog" }
+      headers = {"CONTENT_TYPE" => "application/json"}
 
-    end
-
-    xit "can destroy an item" do
-
-      delete "/api/v1/items", params: JSON.generate(item: item_params)
-
-      created_item = Item.last
+      patch "/api/v1/items/#{id}", headers: headers, params: JSON.generate({item: item_params})
+      item = Item.find_by(id: id)
 
       expect(response).to be_successful
-      expect(created_item.name).to eq(item_params[:name])
-      expect(created_item.description).to eq(item_params[:description])
-      expect(created_item.unit_price).to eq(item_params[:unit_price])
-      expect(created_item.merchant_id).to eq(item_params[:merchant_id])
+      expect(item.name).to_not eq(previous_name)
+      expect(item.name).to eq("The Big Dog")
+    end
+
+    it "can destroy an item" do
+      item = create(:item)
+
+      expect(Item.count).to eq(1)
+
+      delete "/api/v1/items/#{item.id}"
+      message = JSON.parse(response.body)
+
+      expect(response).to be_successful
+      expect(message["body"]).to eq("Item destroyed")
+      expect(Item.count).to eq(0)
+      expect{Item.find(item.id)}.to raise_error(ActiveRecord::RecordNotFound)
+    end
+
+    it "sends the merchant that belong to an item" do
+      merchant = create(:merchant)
+      items = create_list(:item, 34)
+
+      items.each do |item|
+        item.update({:merchant_id => merchant.id})
+      end
+
+      get "/api/v1/items/#{items.first.id}/merchant"
+      items_merchant = JSON.parse(response.body, symbolize_names: true)
+
+      expect(items_merchant).to be_a(Hash)
+      
+      expect(items_merchant[:data]).to be_a(Hash)
+      expect(items_merchant[:data]).to have_key(:id)
+      expect(items_merchant[:data][:id]).to be_a(String)
+      expect(items_merchant[:data][:id].to_i).to eq(merchant.id)
+      expect(items_merchant[:data]).to have_key(:type)
+      expect(items_merchant[:data][:type]).to eq("merchant")
+
+      expect(items_merchant[:data]).to have_key(:attributes)
+      expect(items_merchant[:data][:attributes]).to be_a(Hash)
+      expect(items_merchant[:data][:attributes]).to have_key(:name)
+      expect(items_merchant[:data][:attributes][:name]).to eq(merchant.name)
     end
   end
 
