@@ -1,4 +1,5 @@
 class Api::V1::RevenueController < ApplicationController
+
   def merchant_revenue
     begin
       merchant = Merchant.total_revenue(merchant_id)
@@ -8,6 +9,11 @@ class Api::V1::RevenueController < ApplicationController
       render json: {error: "No such merchant",status: 404}, status: 404
     end
   end
+
+  def  potential_revenue
+
+  end
+
 
   private
 

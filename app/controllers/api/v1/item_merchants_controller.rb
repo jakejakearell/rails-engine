@@ -1,8 +1,10 @@
 class Api::V1::ItemMerchantsController < ApplicationController
-  # before_action :page_count
 
   def index
-    # I would like to abstract out the Merchant items method a bit
-    render json: MerchantSerializer.new(Item.find(params[:id]).merchant)
+    begin
+      render json: MerchantSerializer.new(Item.find(params[:id]).merchant)
+    rescue ActiveRecord::RecordNotFound
+      render json: {error: "No such item",status: 404}, status: 404
+    end
   end
 end
