@@ -7,6 +7,10 @@ class ApplicationController < ActionController::API
     @count = params[:page] || 0
   end
 
+  def quantity
+    @count = params[:quantity] || 10
+  end
+
 
   def page_offset
     if page_count.to_i == 0

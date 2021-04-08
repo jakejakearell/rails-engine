@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Invoice, type: :model do
+RSpec.describe RevenueFacade do
   before(:each) do
     @merchant_1 = Merchant.create!(name: 'Amazon')
 
@@ -47,25 +47,18 @@ RSpec.describe Invoice, type: :model do
     @transaction_07 = Transaction.create!(invoice_id: @invoice_2.id, credit_card_number: 0000000000004444, credit_card_expiration_date: '2005-01-01 00:00:00 -0500', result: "failed")
   end
 
-  describe "relationships" do
-    it { should belong_to :customer }
-    it { should have_many(:invoice_items)}
-    it { should have_many(:items).through(:invoice_items)}
-    it { should have_many(:transactions)}
-  end
-
-  describe 'instance methods' do
-    it "merchant_untapped" do
-      expect(Invoice.potential_revenue(5).count).to eq(5)
-      expect(Invoice.potential_revenue(200).count).to eq(13)
-      expect(Invoice.potential_revenue(13).first).to be_a(Invoice)
+  describe 'happy path' do
+    it "potential_revenue_list and gets list of invoices with non shipped items" do
+      expect(RevenueFacade.potential_revenue_list(5).first).to be_a(Invoice)
     end
-  end
-  describe 'class methods' do
-    it "potential_revenue" do
-      expect(@invoice_1.merchant_untapped).to eq(24)
-      expect(@invoice_2.merchant_untapped).to eq(36)
-      expect(@invoice_3.merchant_untapped).to eq(18)
+
+    it "data_about_invoices process data for poros " do
+      expect(RevenueFacade.data_about_invoices(5).class).to be(Hash)
+    end
+
+    it "unshipped_invoices returns UnshippedOrder poros" do
+      expect(RevenueFacade.unshipped_invoices(5).count).to eq(5)
+      expect(RevenueFacade.unshipped_invoices(5).first).to be_a(UnshippedOrder)
     end
   end
 end

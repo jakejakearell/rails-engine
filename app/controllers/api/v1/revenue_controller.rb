@@ -11,9 +11,9 @@ class Api::V1::RevenueController < ApplicationController
   end
 
   def  potential_revenue
-
+    invoices = RevenueFacade.unshipped_invoices(quantity)
+    render json: UnshippedOrderSerializer.new(invoices)
   end
-
 
   private
 
