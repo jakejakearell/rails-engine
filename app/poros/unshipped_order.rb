@@ -6,5 +6,5 @@ class UnshippedOrder
     @id = data.last[:id]
     @potential_revenue = data.last[:potential_revenue]
   end
-
+  
 end

@@ -4,7 +4,7 @@ RSpec.describe UnshippedOrder do
   describe 'happy path' do
     it 'has attributes of id, merchant_revenue and is a UnshippedOrder object' do
       data = [44 , {:id=>44,
-              :potential_revenue=> 123.99,
+              :potential_revenue=> 123.99
               }]
 
       result = UnshippedOrder.new(data)
