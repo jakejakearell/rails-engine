@@ -14,4 +14,18 @@ class Merchant < ApplicationRecord
     .sum("(invoice_items.quantity * invoice_items.unit_price)")
     return {:id => merchant_id, :merchant_revenue => revenue}
   end
+
+  def self.most_revenue
+    Merchant.
+    joins(:transactions)
+    .select("invoice_items.quantity, invoice_items.unit_price, merchants.id, merchants.name")
+    .where("transactions.result = ?", "success")
+    .where("invoices.status = ?", "shipped")
+    .group("merchants.id")
+    .sum("(invoice_items.quantity * invoice_items.unit_price)")
+  end
+
+  def self.merchant_name(merchant_id)
+    Merchant.find(merchant_id).name
+  end
 end
