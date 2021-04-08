@@ -10,14 +10,31 @@ class Api::V1::RevenueController < ApplicationController
     end
   end
 
-  def  potential_revenue
+  def potential_revenue
     invoices = RevenueFacade.unshipped_invoices(quantity)
     render json: UnshippedOrderSerializer.new(invoices)
+  end
+
+  def most_revenue_merchants
+    if quantity_merchants
+      merchants = RevenueFacade.top_merchants_revenue(quantity_merchants)
+      render json: MerchantNameRevenueSerializer.new(merchants)
+    else
+      render json: {error: "Bad params",status: 400}, status: 400
+    end
   end
 
   private
 
   def merchant_id
     params[:id]
+  end
+
+  def quantity_merchants
+    if params[:quantity].nil? || params[:quantity].to_i == 0
+      false
+    else
+      params[:quantity].to_i
+    end
   end
 end
