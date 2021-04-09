@@ -13,4 +13,23 @@ class Item < ApplicationRecord
     .order(:name)
     .limit(1)
   end
+
+  def self.find_one_by_min_price(min)
+    Item.where("unit_price >= ?", "#{min}")
+    .order(:name)
+    .limit(1)
+  end
+
+  def self.find_one_by_max_price(max)
+    Item.where("unit_price <= ?", "#{max}")
+    .order(:name)
+    .limit(1)
+  end
+
+  def self.find_one_by_price_range(min, max)
+    Item.where("unit_price >= ?","#{min}")
+    .where("unit_price <= ?","#{max}")
+    .order(:name)
+    .limit(1)
+  end
 end

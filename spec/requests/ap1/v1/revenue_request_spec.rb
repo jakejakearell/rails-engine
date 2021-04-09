@@ -221,6 +221,7 @@ describe "Rail Engine API-Revenue" do
         expect(merchant_revenue_rank).to be_a(Hash)
         expect(merchant_revenue_rank[:data]).to be_a(Array)
         expect(merchant_revenue_rank[:data].count).to eq(4)
+      end
     end
 
     it "returns an error when given a string for quantity" do
@@ -240,7 +241,6 @@ describe "Rail Engine API-Revenue" do
       expect(response.status).to eq(400)
       expect(message["error"]).to eq("Bad params")
     end
-  end
 
     describe "merchant revenue" do
       it "returns an error when given a bad merchant id" do
@@ -250,6 +250,17 @@ describe "Rail Engine API-Revenue" do
 
         expect(response.status).to eq(404)
         expect(message["error"]).to eq("No such merchant")
+      end
+    end
+
+    describe "merchant items" do
+      it "returns an error when given no quantity" do
+
+        get '/api/v1/merchants/most_items'
+        message = JSON.parse(response.body)
+
+        expect(response.status).to eq(400)
+        expect(message["error"]).to eq("Bad params")
       end
     end
   end

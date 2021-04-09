@@ -117,13 +117,138 @@ describe "Rail Engine API-Item" do
         item.update({:merchant_id => merchant.id})
       end
 
-      # item_name_partial = Item.first.name[1..-1]
       item_name_partial = "s"
 
       get "/api/v1/items/find/?name=#{item_name_partial}"
 
       expect(response).to be_successful
-      message = JSON.parse(response.body, symbolize_names: true)
+      item = JSON.parse(response.body, symbolize_names: true)
+
+      expect(item).to be_a(Hash)
+
+      expect(item[:data]).to be_a(Hash)
+      expect(item[:data]).to have_key(:id)
+      expect(item[:data][:id]).to be_a(String)
+      expect(item[:data][:id].to_i).to be_a(Integer)
+      expect(item[:data]).to have_key(:type)
+      expect(item[:data][:type]).to eq("item")
+
+      expect(item[:data]).to have_key(:attributes)
+      expect(item[:data][:attributes]).to be_a(Hash)
+      expect(item[:data][:attributes]).to have_key(:name)
+      expect(item[:data][:attributes][:name]).to be_a(String)
+      expect(item[:data][:attributes][:name]).to be_a(String)
+      expect(item[:data][:attributes]).to have_key(:description)
+      expect(item[:data][:attributes][:description]).to be_a(String)
+      expect(item[:data][:attributes]).to have_key(:unit_price)
+      expect(item[:data][:attributes][:unit_price]).to be_a(Float)
+      expect(item[:data][:attributes]).to have_key(:merchant_id)
+      expect(item[:data][:attributes][:merchant_id]).to be_a(Integer)
+    end
+
+    it "can find an item by min price" do
+      merchant = create(:merchant)
+      items = create_list(:item, 34)
+
+      items.each do |item|
+        item.update({:merchant_id => merchant.id})
+      end
+
+      min_price = Item.first.unit_price
+
+      get "/api/v1/items/find/?min_price=#{min_price}"
+
+      expect(response).to be_successful
+      item = JSON.parse(response.body, symbolize_names: true)
+
+      expect(item).to be_a(Hash)
+
+      expect(item[:data]).to be_a(Hash)
+      expect(item[:data]).to have_key(:id)
+      expect(item[:data][:id]).to be_a(String)
+      expect(item[:data][:id].to_i).to be_a(Integer)
+      expect(item[:data]).to have_key(:type)
+      expect(item[:data][:type]).to eq("item")
+
+      expect(item[:data]).to have_key(:attributes)
+      expect(item[:data][:attributes]).to be_a(Hash)
+      expect(item[:data][:attributes]).to have_key(:name)
+      expect(item[:data][:attributes][:name]).to be_a(String)
+      expect(item[:data][:attributes][:name]).to be_a(String)
+      expect(item[:data][:attributes]).to have_key(:description)
+      expect(item[:data][:attributes][:description]).to be_a(String)
+      expect(item[:data][:attributes]).to have_key(:unit_price)
+      expect(item[:data][:attributes][:unit_price]).to be_a(Float)
+      expect(item[:data][:attributes]).to have_key(:merchant_id)
+      expect(item[:data][:attributes][:merchant_id]).to be_a(Integer)
+
+    end
+
+    it "can find an item by max price" do
+      merchant = create(:merchant)
+      items = create_list(:item, 34)
+
+      items.each do |item|
+        item.update({:merchant_id => merchant.id})
+      end
+      price = Item.last.unit_price
+      get "/api/v1/items/find/?max_price=#{price}"
+
+      expect(response).to be_successful
+      item = JSON.parse(response.body, symbolize_names: true)
+
+      expect(item).to be_a(Hash)
+      expect(item[:data]).to be_a(Hash)
+      expect(item[:data]).to have_key(:id)
+      expect(item[:data][:id]).to be_a(String)
+      expect(item[:data][:id].to_i).to be_a(Integer)
+      expect(item[:data]).to have_key(:type)
+      expect(item[:data][:type]).to eq("item")
+      expect(item[:data]).to have_key(:attributes)
+      expect(item[:data][:attributes]).to be_a(Hash)
+      expect(item[:data][:attributes]).to have_key(:name)
+      expect(item[:data][:attributes][:name]).to be_a(String)
+      expect(item[:data][:attributes][:name]).to be_a(String)
+      expect(item[:data][:attributes]).to have_key(:description)
+      expect(item[:data][:attributes][:description]).to be_a(String)
+      expect(item[:data][:attributes]).to have_key(:unit_price)
+      expect(item[:data][:attributes][:unit_price]).to be_a(Float)
+      expect(item[:data][:attributes]).to have_key(:merchant_id)
+      expect(item[:data][:attributes][:merchant_id]).to be_a(Integer)
+    end
+
+    it "can find an item by price range" do
+      merchant = create(:merchant)
+      items = create_list(:item, 34)
+
+      items.each do |item|
+        item.update({:merchant_id => merchant.id})
+      end
+
+
+      get "/api/v1/items/find?min_price=50&max_price=250"
+
+      expect(response).to be_successful
+            item = JSON.parse(response.body, symbolize_names: true)
+
+      expect(item).to be_a(Hash)
+      expect(item[:data]).to be_a(Hash)
+      expect(item[:data]).to have_key(:id)
+      expect(item[:data][:id]).to be_a(String)
+      expect(item[:data][:id].to_i).to be_a(Integer)
+      expect(item[:data]).to have_key(:type)
+      expect(item[:data][:type]).to eq("item")
+      expect(item[:data]).to have_key(:attributes)
+      expect(item[:data][:attributes]).to be_a(Hash)
+      expect(item[:data][:attributes]).to have_key(:name)
+      expect(item[:data][:attributes][:name]).to be_a(String)
+      expect(item[:data][:attributes][:name]).to be_a(String)
+      expect(item[:data][:attributes]).to have_key(:description)
+      expect(item[:data][:attributes][:description]).to be_a(String)
+      expect(item[:data][:attributes]).to have_key(:unit_price)
+      expect(item[:data][:attributes][:unit_price]).to be_a(Float)
+      expect(item[:data][:attributes]).to have_key(:merchant_id)
+      expect(item[:data][:attributes][:merchant_id]).to be_a(Integer)
     end
   end
 
@@ -144,6 +269,20 @@ describe "Rail Engine API-Item" do
 
       expect(response.status).to eq(404)
       expect(message["error"]).to eq("No such item")
+    end
+
+    it "will cause an error if update an item with invalid params" do
+      id = create(:item).id
+      previous_name = Item.last.name
+      item_params = { merchant_id: "" }
+      headers = {"CONTENT_TYPE" => "application/json"}
+
+      patch "/api/v1/items/#{id}", headers: headers, params: JSON.generate({item: item_params})
+
+      message = JSON.parse(response.body)
+
+      expect(response.status).to eq(404)
+      expect(message["error"]).to eq("Bad params")
     end
 
     it "sends a 404 when an invalid id to delete an item" do
@@ -167,6 +306,53 @@ describe "Rail Engine API-Item" do
 
       expect(response.status).to eq(406)
       expect(message["error"]).to eq("Missing item parameters")
+    end
+
+    it "return an error if bad params are sent to the find item search" do
+
+      get "/api/v1/items/find?name=ring&min_price=50&max_price=250"
+      message = JSON.parse(response.body)
+      expect(response.status).to eq(400)
+      expect(message["error"]).to eq("Bad params")
+    end
+
+    it "return an error if bad params are sent to the find item search" do
+
+      get "/api/v1/items/find?name=ring&min_price=50"
+      message = JSON.parse(response.body)
+      expect(response.status).to eq(400)
+      expect(message["error"]).to eq("Bad params")
+    end
+
+    it "return an error if negative number are sent to the find item search" do
+
+      get "/api/v1/items/find?min_price=-50"
+      message = JSON.parse(response.body)
+      expect(response.status).to eq(400)
+      expect(message["error"]).to eq("Bad params")
+    end
+
+    it "return a blank item if params are out of range for the find item search" do
+
+      get "/api/v1/items/find?min_price=50000000000"
+      item = JSON.parse(response.body, symbolize_names: true)
+
+      expect(item).to be_a(Hash)
+      expect(item[:data]).to be_a(Hash)
+      expect(item[:data]).to have_key(:id)
+      expect(item[:data][:id]).to be(nil)
+      expect(item[:data]).to have_key(:type)
+      expect(item[:data][:type]).to eq("item")
+      expect(item[:data]).to have_key(:attributes)
+      expect(item[:data][:attributes]).to be_a(Hash)
+      expect(item[:data][:attributes]).to have_key(:name)
+      expect(item[:data][:attributes][:name]).to be(nil)
+      expect(item[:data][:attributes]).to have_key(:description)
+      expect(item[:data][:attributes][:description]).to be(nil)
+      expect(item[:data][:attributes]).to have_key(:unit_price)
+      expect(item[:data][:attributes][:unit_price]).to be(nil)
+      expect(item[:data][:attributes]).to have_key(:merchant_id)
+      expect(item[:data][:attributes][:merchant_id]).to be(nil)
     end
   end
 end

@@ -17,13 +17,13 @@ class Api::V1::ItemsController < ApplicationController
   end
 
   def find
-    if params[:name]
-      item = Item.find_one_by_name(params[:name])[0]
-      render json: ItemSerializer.new(item)
-    elsif params[:min_price] || params[:max_price]
-      render json: ItemSerializer.new(Item.find_one_by_price(params[:name]))
+    item = RevenueFacade.item_selector(find_params)
+    if item == []
+      render json: ItemSerializer.new(Item.new)
+    elsif item
+      render json: ItemSerializer.new(item[0])
     else
-      render json: {error: "No such item",status: 404}, status: 404
+      render json: {error: "Bad params",status: 400}, status: 400
     end
   end
 
@@ -63,12 +63,7 @@ class Api::V1::ItemsController < ApplicationController
       params.require(:item).permit(:name, :description, :unit_price, :merchant_id )
     end
 
-    def item_update
-      params.require(:item).permit(:name, :description, :unit_price)
-    end
-
-    def price_range
-
-
+    def find_params
+      params.permit(:name, :min_price, :max_price)
     end
 end

@@ -44,6 +44,25 @@ class RevenueFacade
     end
   end
 
+
+  def self.item_selector(info)
+    if info[:name] && info[:min_price] && info[:max_price]
+      false
+    elsif info[:max_price].to_i < 0 || info[:min_price].to_i < 0
+      false
+    elsif info[:name] && info[:min_price] || info[:name] && info[:max_price]
+      false
+    elsif info[:name]
+      Item.find_one_by_name(info[:name])
+    elsif info[:min_price] && info[:max_price]
+      Item.find_one_by_price_range(info[:min_price], info[:max_price])
+    elsif info[:min_price]
+      Item.find_one_by_min_price(info[:min_price])
+    elsif info[:max_price]
+      Item.find_one_by_max_price(info[:max_price])
+    end
+  end
+
   def self.sanatize_active_record_data_items(limit)
     Merchant.most_sales
     .sort_by(&:last)
