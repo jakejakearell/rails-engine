@@ -25,6 +25,10 @@ class Merchant < ApplicationRecord
     .sum("(invoice_items.quantity * invoice_items.unit_price)")
   end
 
+  def self.find_all_by_name(query)
+    Merchant.where("name ILIKE '%#{query}%'")
+  end
+
   def self.merchant_name(merchant_id)
     Merchant.find(merchant_id).name
   end
