@@ -16,6 +16,17 @@ class Api::V1::ItemsController < ApplicationController
     end
   end
 
+  def find
+    item = RevenueFacade.item_selector(find_params)
+    if item == []
+      render json: ItemSerializer.new(Item.new)
+    elsif item
+      render json: ItemSerializer.new(item[0])
+    else
+      render json: {error: "Bad params",status: 400}, status: 400
+    end
+  end
+
   def create
     # this feels brittle
     if item_params.keys.count !=4
@@ -27,8 +38,11 @@ class Api::V1::ItemsController < ApplicationController
 
   def update
     item = Item.find(item_id)
-    item.update(item_update)
-    render json: ItemSerializer.new(Item.find(item_id))
+    if item.update(item_params)
+      render json: ItemSerializer.new(item)
+    else
+      render json: {error: "Bad params",status: 404}, status: 404
+    end
   end
 
   def destroy
@@ -49,7 +63,7 @@ class Api::V1::ItemsController < ApplicationController
       params.require(:item).permit(:name, :description, :unit_price, :merchant_id )
     end
 
-    def item_update
-      params.require(:item).permit(:name, :description, :unit_price)
+    def find_params
+      params.permit(:name, :min_price, :max_price)
     end
 end

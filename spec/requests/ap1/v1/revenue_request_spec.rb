@@ -182,6 +182,32 @@ describe "Rail Engine API-Revenue" do
         end
       end
     end
+
+    describe "Merchants with most items sold" do
+      it "will show a specified quantity of merchants ranked by items sold" do
+
+        get '/api/v1/merchants/most_items?quantity=2'
+        expect(response).to be_successful
+
+        merchant_items = JSON.parse(response.body, symbolize_names: true)
+        expect(merchant_items).to be_a(Hash)
+        expect(merchant_items[:data]).to be_a(Array)
+        expect(merchant_items[:data].count).to eq(2)
+
+        merchant_items[:data].each do |merchant|
+          expect(merchant).to have_key(:id)
+          expect(merchant[:id]).to be_a(String)
+          expect(merchant).to have_key(:type)
+          expect(merchant[:type]).to eq("items_sold")
+          expect(merchant).to have_key(:attributes)
+          expect(merchant[:attributes]).to be_a(Hash)
+          expect(merchant[:attributes]).to have_key(:count)
+          expect(merchant[:attributes][:count]).to be_a(Integer)
+          expect(merchant[:attributes]).to have_key(:name)
+          expect(merchant[:attributes][:name]).to be_a(String)
+        end
+      end
+    end
   end
 
   describe "Sad paths " do
@@ -195,6 +221,7 @@ describe "Rail Engine API-Revenue" do
         expect(merchant_revenue_rank).to be_a(Hash)
         expect(merchant_revenue_rank[:data]).to be_a(Array)
         expect(merchant_revenue_rank[:data].count).to eq(4)
+      end
     end
 
     it "returns an error when given a string for quantity" do
@@ -214,7 +241,6 @@ describe "Rail Engine API-Revenue" do
       expect(response.status).to eq(400)
       expect(message["error"]).to eq("Bad params")
     end
-  end
 
     describe "merchant revenue" do
       it "returns an error when given a bad merchant id" do
@@ -224,6 +250,17 @@ describe "Rail Engine API-Revenue" do
 
         expect(response.status).to eq(404)
         expect(message["error"]).to eq("No such merchant")
+      end
+    end
+
+    describe "merchant items" do
+      it "returns an error when given no quantity" do
+
+        get '/api/v1/merchants/most_items'
+        message = JSON.parse(response.body)
+
+        expect(response.status).to eq(400)
+        expect(message["error"]).to eq("Bad params")
       end
     end
   end

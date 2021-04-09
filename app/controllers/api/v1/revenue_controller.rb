@@ -24,6 +24,15 @@ class Api::V1::RevenueController < ApplicationController
     end
   end
 
+  def most_items_merchants
+    if quantity_merchants
+      merchants = RevenueFacade.top_merchants_items(quantity_merchants)
+      render json: ItemsSoldSerializer.new(merchants)
+    else
+      render json: {error: "Bad params",status: 400}, status: 400
+    end
+  end
+
   private
 
   def merchant_id
