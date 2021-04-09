@@ -107,17 +107,38 @@ describe "Rail Engine API-Merchants" do
       # Don't know if I need to assert the copies are the same.
       expect(merchants[:data].first).to eq(merchants_copy[:data].first)
       expect(merchants[:data].last).to eq(merchants_copy[:data].last)
-
       expect(merchants[:data].first).not_to eq(merchants_new_page[:data].first)
       expect(merchants[:data].last).not_to eq(merchants_new_page[:data].last)
-
       expect(merchants[:data].count).to eq(23)
       expect(merchants_copy[:data].count).to eq(23)
       expect(merchants_new_page[:data].count).to eq(23)
-
       expect(merchants[:data].first.class).to eq(Hash)
       expect(merchants_copy[:data].first.class).to eq(Hash)
       expect(merchants_new_page[:data].first.class).to eq(Hash)
+    end
+
+    it "a user can get a list of all partial matches by merchant name" do
+      create_list(:merchant, 151)
+      partial_name = Merchant.first.name[1..-1]
+
+      get "/api/v1/merchants/find_all?name=#{partial_name}"
+      expect(response).to be_successful
+      merchant_list = JSON.parse(response.body, symbolize_names: true)
+
+
+      merchant_list[:data].each do |merchant|
+        expect(merchant).to have_key(:id)
+        expect(merchant[:id]).to be_a(String)
+
+        expect(merchant).to have_key(:type)
+        expect(merchant[:type]).to eq("merchant")
+
+        expect(merchant).to have_key(:attributes)
+        expect(merchant[:attributes]).to be_a(Hash)
+
+        expect(merchant[:attributes]).to have_key(:name)
+        expect(merchant[:attributes][:name]).to be_a(String)
+      end
     end
   end
 
@@ -148,6 +169,18 @@ describe "Rail Engine API-Merchants" do
       expect(merchants).to be_a(Hash)
       expect(merchants[:data]).to be_a(Array)
       expect(merchants[:data].count).to be(53)
+    end
+
+    it "user searchs for a nonexistant name, it returns an empty collection" do
+      create_list(:merchant, 151)
+      partial_name = "Digimon"
+
+      get "/api/v1/merchants/find_all?name=#{partial_name}"
+      expect(response).to be_successful
+      merchant_list = JSON.parse(response.body, symbolize_names: true)
+
+      expect(merchant_list[:data]).to be_a(Array)
+      expect(merchant_list[:data].count).to eq(0)
     end
   end
 end

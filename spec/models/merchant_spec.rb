@@ -3,7 +3,7 @@ require 'rails_helper'
 describe Merchant do
   before(:each) do
     @merchant_1 = Merchant.create!(name: 'Amazon')
-    @merchant_2 = Merchant.create!(name: 'glamzaon')
+    @merchant_2 = Merchant.create!(name: 'glamazon')
     @merchant_3 = Merchant.create!(name: 'shamazon')
     @merchant_4 = Merchant.create!(name: 'bad store')
     @merchant_5 = Merchant.create!(name: 'really bad store')
@@ -73,6 +73,10 @@ describe Merchant do
   end
 
   describe "class methods" do
+    it "find_all_by_name" do
+      expect(Merchant.find_all_by_name('azon').count).to eq(3)
+    end
+
     it "total_revenue" do
       expect(Merchant.total_revenue(@merchant_1.id)[:merchant_revenue]).to eq(24.00)
       expect(Merchant.total_revenue(@merchant_2.id)[:merchant_revenue]).to eq(36.00)
@@ -88,7 +92,7 @@ describe Merchant do
 
     it "merchant_name" do
       expect(Merchant.merchant_name(@merchant_1.id)).to eq("Amazon")
-      expect(Merchant.merchant_name(@merchant_2.id)).to eq("glamzaon")
+      expect(Merchant.merchant_name(@merchant_2.id)).to eq("glamazon")
       expect(Merchant.merchant_name(@merchant_3.id)).to eq("shamazon")
       expect(Merchant.merchant_name(@merchant_4.id)).to eq("bad store")
       expect(Merchant.merchant_name(@merchant_5.id)).to eq("really bad store")
