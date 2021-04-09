@@ -108,6 +108,23 @@ describe "Rail Engine API-Item" do
       expect(items_merchant[:data][:attributes]).to have_key(:name)
       expect(items_merchant[:data][:attributes][:name]).to eq(merchant.name)
     end
+
+    it "can find an item by partial name" do
+      merchant = create(:merchant)
+      items = create_list(:item, 34)
+
+      items.each do |item|
+        item.update({:merchant_id => merchant.id})
+      end
+
+      # item_name_partial = Item.first.name[1..-1]
+      item_name_partial = "s"
+
+      get "/api/v1/items/find/?name=#{item_name_partial}"
+
+      expect(response).to be_successful
+      message = JSON.parse(response.body, symbolize_names: true)
+    end
   end
 
   describe 'Sad Paths' do
