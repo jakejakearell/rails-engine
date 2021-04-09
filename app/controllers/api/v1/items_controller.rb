@@ -16,6 +16,17 @@ class Api::V1::ItemsController < ApplicationController
     end
   end
 
+  def find
+    if params[:name]
+      item = Item.find_one_by_name(params[:name])[0]
+      render json: ItemSerializer.new(item)
+    elsif params[:min_price] || params[:max_price]
+      render json: ItemSerializer.new(Item.find_one_by_price(params[:name]))
+    else
+      render json: {error: "No such item",status: 404}, status: 404
+    end
+  end
+
   def create
     # this feels brittle
     if item_params.keys.count !=4
@@ -27,8 +38,11 @@ class Api::V1::ItemsController < ApplicationController
 
   def update
     item = Item.find(item_id)
-    item.update(item_update)
-    render json: ItemSerializer.new(Item.find(item_id))
+    if item.update(item_params)
+      render json: ItemSerializer.new(item)
+    else
+      render json: {error: "Bad params",status: 404}, status: 404
+    end
   end
 
   def destroy
@@ -51,5 +65,10 @@ class Api::V1::ItemsController < ApplicationController
 
     def item_update
       params.require(:item).permit(:name, :description, :unit_price)
+    end
+
+    def price_range
+
+
     end
 end

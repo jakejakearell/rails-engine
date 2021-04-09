@@ -25,6 +25,16 @@ class Merchant < ApplicationRecord
     .sum("(invoice_items.quantity * invoice_items.unit_price)")
   end
 
+  def self.most_sales
+    Merchant.
+    joins(:transactions)
+    .select("invoice_items.quantity, invoice_items.unit_price, merchants.id, merchants.name")
+    .where("transactions.result = ?", "success")
+    .where("invoices.status = ?", "shipped")
+    .group("merchants.id")
+    .sum("invoice_items.quantity")
+  end
+
   def self.find_all_by_name(query)
     Merchant.where("name ILIKE '%#{query}%'")
   end

@@ -7,4 +7,10 @@ class Item < ApplicationRecord
                       :description,
                       :unit_price,
                       :merchant_id
+
+  def self.find_one_by_name(query)
+    Item.where("name ILIKE '%#{query}%'")
+    .order(:name)
+    .limit(1)
+  end
 end
