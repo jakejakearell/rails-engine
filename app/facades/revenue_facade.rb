@@ -26,7 +26,6 @@ class RevenueFacade
     .reverse[0..(limit-1)]
   end
 
-
   def self.top_merchants_poro_data(limit)
     merchant_info = RevenueFacade.sanatize_active_record_data(limit)
     merchant_info.reduce(Hash.new) do |memo, merchant|
@@ -43,7 +42,6 @@ class RevenueFacade
       TopRevenue.new(data)
     end
   end
-
 
   def self.item_selector(info)
     if info[:name] && info[:min_price] && info[:max_price]

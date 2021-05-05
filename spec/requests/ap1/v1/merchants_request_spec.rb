@@ -73,7 +73,6 @@ describe "Rail Engine API-Merchants" do
       expect(response).to be_successful
       merchants_new_page = JSON.parse(response.body, symbolize_names: true)
 
-      # Don't know if I need to assert the copies are the same.
       expect(merchants[:data].first).to eq(merchants_copy[:data].first)
       expect(merchants[:data].last).to eq(merchants_copy[:data].last)
 
@@ -104,7 +103,6 @@ describe "Rail Engine API-Merchants" do
       expect(response).to be_successful
       merchants_new_page = JSON.parse(response.body, symbolize_names: true)
 
-      # Don't know if I need to assert the copies are the same.
       expect(merchants[:data].first).to eq(merchants_copy[:data].first)
       expect(merchants[:data].last).to eq(merchants_copy[:data].last)
       expect(merchants[:data].first).not_to eq(merchants_new_page[:data].first)

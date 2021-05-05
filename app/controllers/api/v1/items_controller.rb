@@ -1,6 +1,5 @@
 class Api::V1::ItemsController < ApplicationController
-  # before_action :page_count
-
+  
   def index
     render json: ItemSerializer.new(Item.all
     .limit(query_size)
@@ -28,7 +27,6 @@ class Api::V1::ItemsController < ApplicationController
   end
 
   def create
-    # this feels brittle
     if item_params.keys.count !=4
       render json: {error: "Missing item parameters",status: 406}, status: 406
     else
