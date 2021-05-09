@@ -6,9 +6,6 @@ Mention about using bcrypt for protecting user data and how it's in gemfile and 
 
   - [Jacob Arellano](https://github.com/jakejakearell)
 
-See also the list of
-[Contributors](#contributors)
-who participated in this project.
 
 ## Summary
 
@@ -78,6 +75,10 @@ $ rails bundle exec rspec
 The tests are all built using the [RSpec](https://rspec.info/) and [Capybara](https://github.com/teamcapybara/capybara) test suites.
 
 
+## Endpoints
+
+Add additional notes about how to deploy this on a live system
+**Harrision**
 
 ## Deployment
 
