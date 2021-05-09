@@ -4,7 +4,12 @@ Mention about using bcrypt for protecting user data and how it's in gemfile and 
 
 ## Authors
 
-  - [Jacob Arellano](https://github.com/jakejakearell)
+* **Jacob Arellano** -- [GitHub](https://github.com/jakejakearell) |
+  [LinkedIn](https://www.linkedin.com/in/jacob-arellano-ab2890207/)
+
+    See also the list of
+    [contributors](https://github.com/jakejakearell/rails-engine/contributors)
+    who participated in this project.
 
 
 ## Summary
@@ -53,15 +58,15 @@ for notes on how to deploy the project on a live system.
    ```
 
 3. Create rails database and migrate
-```sh
-$ rails db:create
-$ rails db:migrate
-```
+   ```sh
+   $ rails db:create
+   $ rails db:migrate
+   ```
 
 4. Start rails server
-```sh
-$ rails s
-```
+    ```sh
+    $ rails s
+    ```
 ## Database Normalization
 **Jacob**
 ### DB Schema
@@ -89,31 +94,11 @@ Add additional notes about how to deploy this on a live system
 
   * [Ruby on Rails](https://rubyonrails.org)
   * [HTML](https://html.com)
-  * [JavaScript](https://www.javascript.com)
-  * [CoffeeScript](https://coffeescript.org/)
-  * [Bootstrap](https://getbootstrap.com/)
-
-## How to Contribute
-
-In the spirit of Viewing Party, things done together are better than done on our own. If you have any amazing ideas or contributions on how we can improve this app they are **greatly appreciated**. To contribute:
-
-  1. Fork the Project
-  2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-  3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-  4. Push to the Branch (`git push origin feature/AmazingFeature`)
-  5. Open a Pull Request
 
 ## Roadmap
 
 See the [open issues](https://github.com/jakejakearell/rails-engine/issues) for a list of proposed features (and known issues). Please open an issue ticket if you see an existing error or bug.
 
-## Contributors
-
-  - [Jacob Arellano](https://github.com/jakejakearell)
-
-    See also the list of
-    [contributors](https://github.com/jakejakearell/rails-engine/contributors)
-    who participated in this project.
 
 ## Acknowledgments
   -- **Billie Thompson** - *Provided README Template* -
