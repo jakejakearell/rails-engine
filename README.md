@@ -1,16 +1,11 @@
 # Rails Engine
 
-Mention about using bcrypt for protecting user data and how it's in gemfile and configuration. If you want to use another tool do this to pull it out.
+An API designed to power an Ecommerce web application
 
 ## Authors
 
 * **Jacob Arellano** -- [GitHub](https://github.com/jakejakearell) |
   [LinkedIn](https://www.linkedin.com/in/jacob-arellano-ab2890207/)
-
-    See also the list of
-    [contributors](https://github.com/jakejakearell/rails-engine/contributors)
-    who participated in this project.
-
 
 ## Summary
 
@@ -49,7 +44,7 @@ for notes on how to deploy the project on a live system.
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/harrison-blake/viewing_party
+   git clone https://github.com/jakejakearell/rails-engine
    ```
 
 2. Bundle Install
@@ -68,8 +63,6 @@ for notes on how to deploy the project on a live system.
     $ rails s
     ```
 ## Database Normalization
-**Jacob**
-### DB Schema
 
 [Database Design](insertlinkhere)
 
@@ -87,17 +80,12 @@ Add additional notes about how to deploy this on a live system
 
 ## Deployment
 
-Add additional notes about how to deploy this on a live system
-**Harrision**
+Deployed to Heroku
 
 ## Built With
 
   * [Ruby on Rails](https://rubyonrails.org)
   * [HTML](https://html.com)
-
-## Roadmap
-
-See the [open issues](https://github.com/jakejakearell/rails-engine/issues) for a list of proposed features (and known issues). Please open an issue ticket if you see an existing error or bug.
 
 
 ## Acknowledgments
