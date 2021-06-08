@@ -10,7 +10,7 @@ An API designed to power an Ecommerce web application
 ## Summary
 
   - [Getting Started](#getting-started)
-  - [Database Normalization](#database-normalization)
+  - [Database Schema](#database-schema)
   - [Running the test suite](#running-the-test-suite)
   - [Endpoints](#endpoints)
   - [Built With](#built-with)
@@ -19,8 +19,7 @@ An API designed to power an Ecommerce web application
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on
-your local machine for development and testing purposes. See deployment
-for notes on how to deploy the project on a live system.
+your local machine for development and testing purposes.
 
 ### Prerequisites
 
@@ -59,9 +58,11 @@ for notes on how to deploy the project on a live system.
     ```sh
     $ rails s
     ```
-## Database Normalization
 
-[Database Design]("https://user-images.githubusercontent.com/58375638/121253527-729c5700-c866-11eb-993b-ba315712013c.png")
+## Database Schema
+
+![alt_text](https://user-images.githubusercontent.com/58375638/121253527-729c5700-c866-11eb-993b-ba315712013c.png)
+
 
 ## Running the test suite
 ```sh
