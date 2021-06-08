@@ -61,7 +61,7 @@ for notes on how to deploy the project on a live system.
     ```
 ## Database Normalization
 
-[Database Design](insertlinkhere)
+[Database Design]("https://user-images.githubusercontent.com/58375638/121253527-729c5700-c866-11eb-993b-ba315712013c.png")
 
 ## Running the test suite
 ```sh
